@@ -43,6 +43,30 @@
             border-radius: 0px;
         }
 
+        /* Mobile: reduce height, keep width */
+        @media (max-width: 449px) {
+            .story-container { 
+                height: auto; 
+                max-height: 70vh;
+            }
+        }
+
+        /* Smaller mobile: reduce both width and height proportionally */
+        @media (max-width: 360px) {
+            .story-container {
+                max-width: 90vw;
+                max-height: 60vh;
+            }
+        }
+
+        /* Extra small: further reduce proportionally */
+        @media (max-width: 300px) {
+            .story-container {
+                max-width: 85vw;
+                max-height: 50vh;
+            }
+        }
+
         @media (min-width: 450px) {
             .story-container { border-radius: 20px; height: 95vh; }
         }
