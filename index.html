@@ -270,11 +270,11 @@
 
         /* Extra small-height tweaks to keep everything visible on short screens */
         @media (max-height: 700px) {
-            .slide { padding: 40px 12px calc(100px + env(safe-area-inset-bottom, 0px)) 12px; }
+            .slide { padding: 12px; }
             h1 { font-size: 1.9rem; }
             p { font-size: 0.95rem; }
-            .music-player { bottom: env(safe-area-inset-bottom, 0px); }
-            .progress-container { top: 0; padding: 6px 0 0 0; }
+            .music-player { bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+            .progress-container { top: calc(6px + env(safe-area-inset-top, 0px)); }
         }
 
     </style>
