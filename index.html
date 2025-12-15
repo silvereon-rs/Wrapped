@@ -245,6 +245,24 @@
         .nav-zone, .play-btn { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
         .play-btn { -webkit-tap-highlight-color: transparent; }
 
+        /* Ensure full viewport height on mobile (uses --vh to avoid mobile URL bar issues) */
+        :root { --vh: 1vh; }
+        .story-container { height: calc(var(--vh, 1vh) * 100); max-height: calc(var(--vh, 1vh) * 100); }
+
+        /* Prefer newer svh unit when available */
+        @supports (height: 100svh) {
+            .story-container { height: 100svh; max-height: 100svh; }
+        }
+
+        /* Extra small-height tweaks to keep everything visible on short screens */
+        @media (max-height: 700px) {
+            .slide { padding: 12px; }
+            h1 { font-size: 1.9rem; }
+            p { font-size: 0.95rem; }
+            .music-player { bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+            .progress-container { top: calc(6px + env(safe-area-inset-top, 0px)); }
+        }
+
     </style>
 </head>
 <body>
