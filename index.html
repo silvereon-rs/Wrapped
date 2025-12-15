@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rajat & Avni: 2025 Wrapped Premium</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
@@ -98,9 +97,8 @@
 
         /* --- Progress Bar --- */
         .progress-container {
-            position: absolute; top: 0; left: 0; right: 0;
+            position: absolute; top: 10px; left: 10px; right: 10px;
             display: flex; gap: 4px; z-index: 101;
-            padding: 8px 10px 0 10px;
         }
         .progress-bar {
             flex: 1; height: 4px; background: rgba(255,255,255,0.3);
@@ -117,7 +115,7 @@
         .slide {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 0 25px 25px 25px;
+            padding: 25px;
             opacity: 0; pointer-events: none; z-index: 10;
             transition: opacity 0.5s ease;
         }
@@ -178,29 +176,14 @@
         .photo-item:nth-child(2) { height: 95px; }
         .photo-item:nth-child(3) { height: 95px; }
 
-        /* Music Player Footer --- */
+        /* --- Music Player Footer --- */
         .music-player {
             position: absolute; bottom: 40px; left: 25px; right: 25px;
-            display: flex; align-items: center; gap: 12px;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-            padding: 10px 12px; border-radius: 50px; z-index: 101;
-            border: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; gap: 15px;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
+            padding: 12px; border-radius: 50px; z-index: 101;
+            border: 1px solid rgba(255,255,255,0.1);
             pointer-events: auto;
-        }
-
-        @media (max-width: 500px) {
-            .music-player {
-                position: fixed; bottom: env(safe-area-inset-bottom, 8px);
-                margin: 0 auto; left: 12px; right: 12px;
-            }
-            .slide {
-                padding: 0 25px calc(100px + env(safe-area-inset-bottom, 0px)) 25px;
-            }
-        }
-        .play-btn {
-            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #fff; cursor: pointer;
-            pointer-events: auto; z-index: 51;
         }
         .album-art { width: 40px; height: 40px; border-radius: 50%; background: #fff; overflow: hidden; animation: spin 4s linear infinite; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
         .song-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -229,54 +212,6 @@
         }
         .story-container.paused .paused-indicator { opacity: 1; }
 
-        /* Mobile responsiveness adjustments */
-        @media (max-width: 360px) {
-            h1 { font-size: 2.2rem; }
-            p { font-size: 1rem; }
-            .slide { padding: 0 18px calc(100px + env(safe-area-inset-bottom, 0px)) 18px; }
-            .stat-card { padding: 18px; border-radius: 18px; }
-            .chart-container { height: 180px; }
-            .photo-item:nth-child(1) { height: 150px; }
-            .photo-item:nth-child(2), .photo-item:nth-child(3) { height: 70px; }
-            .music-player { left: 12px; right: 12px; padding: 8px; gap: 10px; }
-            .play-btn, .album-art { width: 36px; height: 36px; }
-            .progress-container { top: 0; left: 8px; right: 8px; padding: 6px 0 0 0; }
-        }
-
-        /* Prefer reduced motion for accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            .bg-gradient, .album-art, .vis-bar { animation: none !important; }
-            .progress-fill { transition: none !important; }
-        }
-
-        /* Reduce heavy effects on touch devices for performance */
-        @media (pointer: coarse) {
-            .bg-intro { background-attachment: scroll; }
-            .stat-card, .music-player { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255,255,255,0.04); }
-        }
-
-        /* Touch/interaction helpers */
-        .nav-zone, .play-btn { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-        .play-btn { -webkit-tap-highlight-color: transparent; }
-
-        /* Ensure full viewport height on mobile (uses --vh to avoid mobile URL bar issues) */
-        :root { --vh: 1vh; }
-        .story-container { height: calc(var(--vh, 1vh) * 100); max-height: calc(var(--vh, 1vh) * 100); }
-
-        /* Prefer newer svh unit when available */
-        @supports (height: 100svh) {
-            .story-container { height: 100svh; max-height: 100svh; }
-        }
-
-        /* Extra small-height tweaks to keep everything visible on short screens */
-        @media (max-height: 700px) {
-            .slide { padding: 0 12px 12px 12px; }
-            h1 { font-size: 1.9rem; }
-            p { font-size: 0.95rem; }
-            .music-player { bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
-            .progress-container { top: calc(6px + env(safe-area-inset-top, 0px)); }
-        }
-
     </style>
 </head>
 <body>
@@ -287,9 +222,9 @@
 
     <div class="progress-container" id="progressContainer"></div>
 
-    <div class="nav-zone nav-left" id="prevBtn" role="button" aria-label="Previous slide" tabindex="0"></div>
-    <div class="pause-zone" id="pauseBtn" role="button" aria-label="Pause" tabindex="0"></div>
-    <div class="nav-zone nav-right" id="nextBtn" role="button" aria-label="Next slide" tabindex="0"></div>
+    <div class="nav-zone nav-left" id="prevBtn"></div>
+    <div class="pause-zone" id="pauseBtn"></div>
+    <div class="nav-zone nav-right" id="nextBtn"></div>
 
     <div class="slide active">
         <div class="bg-gradient bg-intro"></div>
@@ -331,7 +266,7 @@
         <h1>"I Love You" ❤️</h1>
         <p>The Romance Ratio</p>
         <div class="stat-card">
-            <div class="chart-container" style="height: min(45vh, 220px); width: min(45vw, 220px); margin: 0 auto;">
+            <div class="chart-container" style="height: 200px; width: 200px; margin: 0 auto;">
                 <canvas id="loveChart"></canvas>
             </div>
             <div style="margin-top: 25px; text-align: center; width: 100%;">
@@ -448,7 +383,6 @@
     </div> -->
 
     <div class="music-player">
-        <button id="playBtn" class="play-btn" aria-label="Play/Pause"><i class="fa-solid fa-play"></i></button>
         <div class="album-art"><img src="https://drive.google.com/thumbnail?id=1oBDQEDbE2STmhnFev1GPgLDLpIb3Z7qa" style="width:100%;height:100%;"></div>
         <div class="song-info">
             <div class="song-title">Finding Her</div>
@@ -457,49 +391,16 @@
         <div class="visualizer">
             <div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div>
         </div>
-        <audio id="bgMusic" style="display:none;" autoplay muted playsinline>
-            <source src="https://pagalnew.com/128-downloads/50971" type="audio/mpeg">
-            <source src="https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3" type="audio/mpeg">
+        <audio id="bgMusic" style="display:none;" autoplay controls>
+            <source src="https://pagalnew.com/128-downloads/50971" type="audio/mp3">
         </audio>
     </div>
     
     <script>
         const audio = document.getElementById('bgMusic');
-        const playBtn = document.getElementById('playBtn');
         audio.loop = true;
-        audio.volume = 0.3;
-        // Start muted to satisfy autoplay policies; unmute on first user gesture or when user presses Play
-        audio.muted = true;
-        audio.play().catch(e => console.warn('Autoplay prevented or failed:', e));
-
-        function updatePlayIcon() {
-            if (!playBtn) return;
-            playBtn.innerHTML = audio.paused ? '<i class="fa-solid fa-play"></i>' : '<i class="fa-solid fa-pause"></i>';
-        }
-
-        if (playBtn) {
-            playBtn.addEventListener('click', () => {
-                if (audio.paused) {
-                    audio.play().then(() => { audio.muted = false; audio.volume = 0.3; updatePlayIcon(); }).catch(e => console.warn('Play failed:', e));
-                } else {
-                    audio.pause();
-                    updatePlayIcon();
-                }
-            });
-            updatePlayIcon();
-        }
-
-        // Unmute and ensure playback once user interacts with the document (required on many browsers)
-        const onFirstInteraction = () => {
-            document.removeEventListener('click', onFirstInteraction);
-            document.removeEventListener('touchstart', onFirstInteraction);
-            audio.muted = false;
-            audio.play().then(updatePlayIcon).catch(e => console.warn('Play on interaction failed:', e));
-        };
-        document.addEventListener('click', onFirstInteraction, { once: true });
-        document.addEventListener('touchstart', onFirstInteraction, { once: true });
-
-        audio.addEventListener('error', (e) => { console.warn('Audio failed to load or play', e, audio.error); });
+        audio.volume = 0.5;
+        audio.play();
     </script>
 
 </div>
@@ -699,29 +600,13 @@
     const pauseBtn = document.getElementById('pauseBtn');
     prevBtn.addEventListener('click', prevSlide);
     nextBtn.addEventListener('click', nextSlide);
-    // Keyboard support for nav buttons (Enter / Space)
-    prevBtn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); prevSlide(); }});
-    nextBtn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); nextSlide(); }});
-    pauseBtn.addEventListener('click', () => { isPaused ? resumeTimer() : pauseTimer(); });
-    pauseBtn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); isPaused ? resumeTimer() : pauseTimer(); }});
-    // Only allow hold-to-pause on slides after the first one
-    const handleDown = () => { if (currentSlide === 0) return; pauseTimer(); };
-    const handleUp = () => { if (currentSlide === 0) return; resumeTimer(); };
+    const handleDown = () => pauseTimer();
+    const handleUp = () => resumeTimer();
     storyContainer.addEventListener('mousedown', handleDown);
     storyContainer.addEventListener('mouseup', handleUp);
     storyContainer.addEventListener('mouseleave', handleUp);
     storyContainer.addEventListener('touchstart', handleDown, {passive: true});
     storyContainer.addEventListener('touchend', handleUp);
-
-    // Keyboard shortcuts for the story: arrows navigate, space toggles pause
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') { prevSlide(); }
-        else if (e.key === 'ArrowRight') { nextSlide(); }
-        else if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'k') {
-            e.preventDefault();
-            isPaused ? resumeTimer() : pauseTimer();
-        }
-    });
 
     // Start
     showSlide(0);
