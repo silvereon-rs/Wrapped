@@ -118,6 +118,7 @@
             padding: 25px;
             opacity: 0; pointer-events: none; z-index: 10;
             transition: opacity 0.5s ease;
+            overflow-y: auto;
         }
         .slide.active { opacity: 1; pointer-events: auto; }
 
@@ -176,7 +177,7 @@
         .photo-item:nth-child(2) { height: 95px; }
         .photo-item:nth-child(3) { height: 95px; }
 
-        /* --- Music Player Footer --- */
+        /* Music Player Footer --- */
         .music-player {
             position: absolute; bottom: 40px; left: 25px; right: 25px;
             display: flex; align-items: center; gap: 12px;
@@ -184,9 +185,20 @@
             padding: 10px 12px; border-radius: 50px; z-index: 50;
             border: 1px solid rgba(255,255,255,0.08);
         }
+
+        @media (max-width: 500px) {
+            .music-player {
+                position: fixed; bottom: env(safe-area-inset-bottom, 8px);
+                margin: 0 auto; left: 12px; right: 12px;
+            }
+            .slide {
+                padding: 25px 25px calc(100px + env(safe-area-inset-bottom, 0px)) 25px;
+            }
+        }
         .play-btn {
             width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #fff; cursor: pointer;
+            pointer-events: auto; z-index: 51;
         }
         .album-art { width: 40px; height: 40px; border-radius: 50%; background: #fff; overflow: hidden; animation: spin 4s linear infinite; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
         .song-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -219,12 +231,12 @@
         @media (max-width: 360px) {
             h1 { font-size: 2.2rem; }
             p { font-size: 1rem; }
-            .slide { padding: 18px; }
+            .slide { padding: 18px 18px calc(100px + env(safe-area-inset-bottom, 0px)) 18px; }
             .stat-card { padding: 18px; border-radius: 18px; }
             .chart-container { height: 180px; }
             .photo-item:nth-child(1) { height: 150px; }
             .photo-item:nth-child(2), .photo-item:nth-child(3) { height: 70px; }
-            .music-player { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); left: 12px; right: 12px; padding: 8px; gap: 10px; }
+            .music-player { left: 12px; right: 12px; padding: 8px; gap: 10px; }
             .play-btn, .album-art { width: 36px; height: 36px; }
             .progress-container { top: calc(8px + env(safe-area-inset-top, 0px)); left: 8px; right: 8px; }
         }
@@ -256,10 +268,10 @@
 
         /* Extra small-height tweaks to keep everything visible on short screens */
         @media (max-height: 700px) {
-            .slide { padding: 12px; }
+            .slide { padding: 12px 12px calc(100px + env(safe-area-inset-bottom, 0px)) 12px; }
             h1 { font-size: 1.9rem; }
             p { font-size: 0.95rem; }
-            .music-player { bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+            .music-player { bottom: env(safe-area-inset-bottom, 0px); }
             .progress-container { top: calc(6px + env(safe-area-inset-top, 0px)); }
         }
 
