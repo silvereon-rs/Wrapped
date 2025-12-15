@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rajat & Avni: 2025 Wrapped Premium</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            /* Slightly brighter colors for better readability */
+            --rajat-color: #38bdf8; /* Sky Blue */
+            --avni-color: #fb7185;  /* Rose Pink */
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; user-select: none; }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* --- Main Container --- */
+        .story-container {
+            width: 100%;
+            max-width: 430px; /* Standard mobile width */
+            height: 100%;
+            max-height: 932px;
+            position: relative;
+            background: #111;
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0,0,0,0.8);
+            border-radius: 0px;
+        }
+
+        @media (min-width: 450px) {
+            .story-container { border-radius: 20px; height: 95vh; }
+        }
+
+        /* --- Grain Overlay (Texture) --- */
+        .grain-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.4; pointer-events: none; z-index: 100;
+        }
+
+        /* --- Dynamic Backgrounds (Adjusted for readability) --- */
+        .bg-gradient {
+            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            z-index: 0;
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+            transition: opacity 1s ease;
+        }
+        
+        /* Intro slide: use a full-cover hero image with subtle dark overlay for readability */
+        .bg-intro {
+            background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://drive.google.com/thumbnail?id=1qYjewp_JelsHdSQ0wR_4aU1--D319nFg&sz=w1200');
+            background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; transform: scale(0.75)
+        }
+        /* Disable the sliding gradient animation for the intro background */
+        .bg-gradient.bg-intro { animation: none !important; }
+        .bg-chat { background: linear-gradient(135deg, #036b88, #0390a8, #155e75); }
+        .bg-love { background: linear-gradient(135deg, #be123c, #fda4af, #881337); }
+        .bg-photo { background: linear-gradient(135deg, #059669, #10b981, #064e3b); }
+        /* Call Habits: Mustard background */
+        .bg-calls { background: linear-gradient(135deg, #ff944d, #ec8a39); }
+
+        /* Ensure readable (white) text on the mustard Call Habits background */
+        .bg-calls ~ h1,
+        .bg-calls ~ p,
+        .bg-calls ~ .stat-card,
+        .bg-calls ~ .stat-card * {
+            color: #ffffff !important;
+        }
+
+        /* Glass card styling for the Calls slide: darker translucent for contrast */
+        
+        .bg-end { background: linear-gradient(135deg, #0949d4, #0c58d1, #1e3a8a); }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Progress Bar --- */
+        .progress-container {
+            position: absolute; top: 10px; left: 10px; right: 10px;
+            display: flex; gap: 4px; z-index: 101;
+        }
+        .progress-bar {
+            flex: 1; height: 4px; background: rgba(255,255,255,0.3);
+            border-radius: 10px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; background: #fff; width: 0%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        .paused .progress-fill { animation-play-state: paused !important; transition: none !important; }
+
+        /* --- Slide Layout --- */
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 25px;
+            opacity: 0; pointer-events: none; z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+        .slide.active { opacity: 1; pointer-events: auto; }
+
+        /* --- Typography --- */
+        h1 {
+            font-size: 2.8rem; font-weight: 900; line-height: 1; margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+            transform: translateY(20px); opacity: 0;
+            animation: slideUp 0.6s forwards 0.2s;
+        }
+        p {
+            /* Increased opacity for better readability */
+            font-size: 1.1rem; color: rgba(255,255,255,0.9); margin-bottom: 25px;
+            text-align: center; font-weight: 300;
+            transform: translateY(20px); opacity: 0;
+            animation: slideUp 0.6s forwards 0.3s;
+        }
+        .rajat-text { color: var(--rajat-color); font-weight: 700; }
+        .avni-text { color: var(--avni-color); font-weight: 700; }
+        
+        /* Big Stats Numbers */
+        .big-num { font-size: 1.8rem; font-weight: 800; display: block; line-height: 1.2;}
+        .stat-label { font-size: 0.8rem; opacity: 0.8; font-weight: 500;}
+
+        /* --- Glass Cards --- */
+        .stat-card {
+            background: var(--card-bg);
+            /* Reduced blur for a subtler glass effect */
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 25px; border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transform: scale(0.95); opacity: 0;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.4s;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- Chart Containers --- */
+        .chart-container {
+            width: 100%; height: 220px; position: relative;
+            margin-top: 10px;
+        }
+        
+        /* --- Photo Grid (Slide 4) --- */
+        .photo-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;
+        }
+        .photo-item {
+            background: #333; border-radius: 15px; overflow: hidden; position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .photo-item:nth-child(1) { grid-row: span 2; height: 200px; }
+        .photo-item:nth-child(2) { height: 95px; }
+        .photo-item:nth-child(3) { height: 95px; }
+
+        /* --- Music Player Footer --- */
+        .music-player {
+            position: absolute; bottom: 40px; left: 25px; right: 25px;
+            display: flex; align-items: center; gap: 15px;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
+            padding: 12px; border-radius: 50px; z-index: 50;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .album-art { width: 40px; height: 40px; border-radius: 50%; background: #fff; overflow: hidden; animation: spin 4s linear infinite; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .song-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .song-title { font-size: 0.8rem; font-weight: 700; }
+        .song-artist { font-size: 0.7rem; opacity: 0.7; }
+        .visualizer { display: flex; gap: 3px; align-items: flex-end; height: 15px; }
+        .vis-bar { width: 3px; background: var(--rajat-color); animation: bounce 0.5s infinite ease-in-out alternate; }
+        .vis-bar:nth-child(even) { background: var(--avni-color); animation-delay: 0.1s; }
+
+        /* --- Touch Zones --- */
+        .nav-zone { position: absolute; top: 0; height: 100%; width: 35%; z-index: 90; }
+        .nav-left { left: 0; }
+        .nav-right { right: 0; }
+        .pause-zone { position: absolute; top: 0; left: 35%; width: 30%; height: 100%; z-index: 90; }
+
+        /* --- Animations --- */
+        @keyframes slideUp { to { transform: translateY(0); opacity: 1; } }
+        @keyframes popIn { to { transform: scale(1); opacity: 1; } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes bounce { 0% { height: 3px; } 100% { height: 15px; } }
+
+        .paused-indicator {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 4rem; color: rgba(255,255,255,0.8); opacity: 0; pointer-events: none;
+            transition: opacity 0.2s; z-index: 200;
+        }
+        .story-container.paused .paused-indicator { opacity: 1; }
+
+    </style>
+</head>
+<body>
+
+<div class="story-container" id="storyContainer">
+    <div class="grain-overlay"></div>
+    <div class="paused-indicator"><i class="fa-solid fa-pause"></i></div>
+
+    <div class="progress-container" id="progressContainer"></div>
+
+    <div class="nav-zone nav-left" id="prevBtn"></div>
+    <div class="pause-zone" id="pauseBtn"></div>
+    <div class="nav-zone nav-right" id="nextBtn"></div>
+
+    <div class="slide active">
+        <div class="bg-gradient bg-intro"></div>
+        <!-- <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));">✨</div> -->
+        <h1>2025<br>WRAPPED</h1>
+        <p style="text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">Rajat & Avni</p>
+        <div class="stat-card" style="backdrop-filter: blur(1px); -webkit-backdrop-filter: blur(2px); width: 85%; margin: 0 auto;">
+            <p style="opacity:1; transform:none; margin:0; color: #eee; font-weight: 500;">
+            365 Days.<br>Infinite Memories.<br>Let's look at the numbers. ✨
+            </p>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="bg-gradient bg-chat"></div>
+        <h1>Chatterbox 💬</h1>
+        <p>Total Messages: <strong>73,926</strong></p>
+        <div class="stat-card">
+            <div class="chart-container">
+                <canvas id="msgChart"></canvas>
+            </div>
+            
+            <div style="display: flex; justify-content: space-around; width: 100%; margin-top: 20px; text-align: center;">
+                <div>
+                    <span class="big-num rajat-text">~95</span>
+                    <span class="stat-label">Rajat's Daily Avg</span>
+                </div>
+                <div style="width: 1px; background: rgba(255,255,255,0.2); height: 40px;"></div>
+                <div>
+                    <span class="big-num avni-text">~108</span>
+                    <span class="stat-label">Avni's Daily Avg</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="bg-gradient bg-love"></div>
+        <h1>"I Love You" ❤️</h1>
+        <p>The Romance Ratio</p>
+        <div class="stat-card">
+            <div class="chart-container" style="height: 200px; width: 200px; margin: 0 auto;">
+                <canvas id="loveChart"></canvas>
+            </div>
+            <div style="margin-top: 25px; text-align: center; width: 100%;">
+                <div style="display: flex; justify-content: space-around; margin-bottom: 15px;">
+                    <div>
+                        <span class="big-num rajat-text" style="font-size: 2rem;">1,161</span>
+                        <span class="stat-label">Rajat (50.1%)</span>
+                    </div>
+                    <div>
+                        <span class="big-num avni-text" style="font-size: 2rem;">1,156</span>
+                        <span class="stat-label">Avni (49.9%)</span>
+                    </div>
+                </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 5px; margin-bottom: 0; opacity: 0.9; transform: none;">
+                It was basically a tie!
+            </p>
+            <p style="font-size: 0.9rem; margin-top: 5px; opacity: 0.9; transform: none;">
+                You both said it <strong>2,317</strong> times this year.
+            </p>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="bg-gradient bg-photo"></div>
+        <h1>Snapshots 📸</h1>
+        <p>Shared Memories</p>
+        <div class="stat-card" style="padding: 15px;">
+            <div class="photo-grid">
+                <div class="photo-item"><img src="https://drive.google.com/thumbnail?id=1PVxl-rdHPJz4YjHGzpNfPWhXvriO0jol" alt="Couple"></div>
+                <div class="photo-item"><img src="https://drive.google.com/thumbnail?id=110JamCIha89JtEeNb3Vu0_4laxOESY62" alt="Love"></div>
+                <div class="photo-item"><img src="https://drive.google.com/thumbnail?id=1mW3NCNymFp9KI5xiXM_IucbL6o2qwEP2" alt="Date"></div>
+            </div>
+            <div style="margin-top: 15px; width: 100%; text-align: left;">
+                <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 15px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.1);">
+                    <i class="fa-solid fa-camera-retro" style="font-size: 1.5rem; margin-right: 15px; color: var(--rajat-color);"></i>
+                    <div>
+                         <span style="font-size: 0.9rem; opacity: 0.8;">Top Photographer - Rajat</span><br>
+                        <span style="font-size: 1.1rem;"><strong>Rajat</strong> sent <span class="rajat-text">3,446</span> photos, while <strong>Avni</strong> sent <span class="avni-text">2,242</span> photos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="bg-gradient bg-calls"></div>
+        <h1>Call Habits 📞</h1>
+        <p>How you connected</p>
+        <div class="stat-card">
+             <div style="display: flex; justify-content: space-around; width: 100%; margin-bottom: 20px; text-align: center;">
+                <div>
+                    <span class="big-num avni-text">548</span>
+                    <span class="stat-label">Avni Initiated</span>
+                </div>
+                <div style="width: 1px; background: rgba(255,255,255,0.2); height: 40px;"></div>
+                <div>
+                    <span class="big-num rajat-text">131</span>
+                    <span class="stat-label">Rajat Initiated</span>
+                </div>
+            </div>
+
+            <div class="chart-container" style="height: 240px;">
+                <canvas id="callChart"></canvas>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 15px; opacity: 1; transform: none;">
+                <strong>99%</strong> Video Calls. You need to see each other!
+            </p>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="bg-gradient bg-end"></div>
+        <h1>The Verdict</h1>
+        <p>Your 2025 at a glance</p>
+        
+        <div class="stat-card" style="text-align: left;">
+            <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                <span>🗣️ <strong>Chattiest:&nbsp;</strong></span> <span class="avni-text" style="font-size:1.2rem; font-weight: 800;">Avni</span>
+            </div>
+            <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                <span>💋 <strong>Romantic:&nbsp;</strong></span> <span class="rajat-text" style="font-size:1.2rem; font-weight: 800;">Rajat</span>
+            </div>
+            <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                <span>📞 <strong>Initiator:&nbsp;</strong></span> <span class="avni-text" style="font-size:1.2rem; font-weight: 800;">Avni</span>
+            </div>
+            <div style="margin-bottom: 0px; display: flex; align-items: center; justify-content: space-between;">
+                <span>📸 <strong>Photographer:&nbsp;</strong></span> <span class="rajat-text">Rajat</span>
+            </div>
+        </div>
+        <p style="margin-top: 30px; opacity: 0.7; font-size: 0.9rem;">See you in 2026! 🥂</p>
+        <button onclick="location.reload()" style="margin-top: 25px; padding: 12px 30px; background: #fff; color: #000; border: none; border-radius: 30px; font-weight: 700; cursor: pointer; pointer-events: auto; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">Replay Story ↺</button>
+    </div>
+    
+    <!-- <div class="slide">
+        <div class="bg-gradient bg-end"></div>
+        <h1>The Verdict 🏆</h1>
+        <div class="stat-card" style="text-align: left; padding: 30px;">
+            <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                <span>🗣️ <strong>Chattiest</strong></span> <span class="avni-text" style="font-size:1.2rem; font-weight: 800;">Avni</span>
+            </div>
+            <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                <span>💋 <strong>Romantic</strong></span> <span class="rajat-text" style="font-size:1.2rem; font-weight: 800;">Rajat</span>
+            </div>
+            <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                <span>📞 <strong>Initiator</strong></span> <span class="avni-text" style="font-size:1.2rem; font-weight: 800;">Avni</span>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.2); margin: 25px 0;">
+            <div style="text-align: center; font-size: 1.6rem; font-weight: 900;">
+                Happy 2026! 🥂
+            </div>
+        </div>
+        <button onclick="location.reload()" style="margin-top: 25px; padding: 12px 30px; background: #fff; color: #000; border: none; border-radius: 30px; font-weight: 700; cursor: pointer; pointer-events: auto; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">Replay Story ↺</button>
+    </div> -->
+
+    <div class="music-player">
+        <div class="album-art"><img src="https://drive.google.com/thumbnail?id=1oBDQEDbE2STmhnFev1GPgLDLpIb3Z7qa" style="width:100%;height:100%;"></div>
+        <div class="song-info">
+            <div class="song-title">Finding Her</div>
+            <div class="song-artist">Kushagra</div>
+        </div>
+        <div class="visualizer">
+            <div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div>
+        </div>
+        <audio id="bgMusic" style="display:none;" autoplay controls>
+            <source src="https://pagalnew.com/128-downloads/50971" type="audio/mp3">
+        </audio>
+    </div>
+    
+    <script>
+        const audio = document.getElementById('bgMusic');
+        audio.loop = true;
+        audio.volume = 0.5;
+        audio.play();
+    </script>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+    // --- Configuration ---
+    const slides = document.querySelectorAll('.slide');
+    const progressContainer = document.getElementById('progressContainer');
+    const storyContainer = document.getElementById('storyContainer');
+    const SLIDE_DURATION = 8000; // 8 seconds
+    let currentSlide = 0;
+    let timer;
+    let startTime;
+    let remainingTime = SLIDE_DURATION;
+    let isPaused = false;
+    let charts = {};
+
+    // Colors & Styling
+    const colRajat = '#38bdf8';
+    const colAvni = '#fb7185';
+    // Use brighter white for chart elements for better readability
+    const colTextBright = '#ffffff'; 
+    const colGridBright = 'rgba(255,255,255,0.2)';
+
+    // --- Init Progress Bars ---
+    slides.forEach((_, index) => {
+        const bar = document.createElement('div');
+        bar.classList.add('progress-bar');
+        bar.innerHTML = `<div class="progress-fill" id="fill-${index}"></div>`;
+        progressContainer.appendChild(bar);
+    });
+
+    // --- Chart Data & Render Logic ---
+    function destroyChart(id) {
+        if(charts[id]) { charts[id].destroy(); charts[id] = null; }
+    }
+
+    function renderSlideContent(index) {
+        // Slide 2: Message Line Chart
+        if (index === 1) {
+            destroyChart('msgChart');
+            const ctx = document.getElementById('msgChart').getContext('2d');
+            charts['msgChart'] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Mar', 'May', 'Jul', 'Sep', 'Nov'],
+                    datasets: [
+                        { label: 'Rajat', data: [20, 45, 30, 60, 55, 80], borderColor: colRajat, tension: 0.4, borderWidth: 3, pointRadius: 4, pointBackgroundColor: colRajat },
+                        { label: 'Avni', data: [25, 40, 35, 65, 50, 85], borderColor: colAvni, tension: 0.4, borderWidth: 3, pointRadius: 4, pointBackgroundColor: colAvni }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    animation: { duration: 2000, easing: 'easeOutQuart' },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { mode: 'index', intersect: false, backgroundColor: 'rgba(0,0,0,0.8)', titleColor: '#fff', bodyColor: '#fff' }
+                    },
+                    scales: { 
+                        x: { display: true, ticks: {color: colTextBright, font:{weight:'500'}}, grid: {display:false} }, 
+                        y: { display: true, ticks: {display: false}, grid: {color: colGridBright} } 
+                    }
+                }
+            });
+        }
+
+        // Slide 3: Love Doughnut Chart
+        if (index === 2) {
+            destroyChart('loveChart');
+            const ctx = document.getElementById('loveChart').getContext('2d');
+            charts['loveChart'] = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Rajat', 'Avni'],
+                    datasets: [{
+                        data: [1161, 1156],
+                        backgroundColor: [colRajat, colAvni],
+                        borderWidth: 0,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    cutout: '65%',
+                    animation: { animateScale: true, animateRotate: true, duration: 2000 },
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                }
+            });
+        }
+
+        // Slide 5: Calls Radar Chart
+        if (index === 4) {
+            destroyChart('callChart');
+            const ctx = document.getElementById('callChart').getContext('2d');
+            charts['callChart'] = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Morning', 'Night', 'Video', 'Audio', 'Long'],
+                    datasets: [
+                        { label: 'Avni', data: [65, 90, 99, 20, 80], borderColor: colAvni, backgroundColor: 'rgba(251, 113, 133, 0.3)', borderWidth: 2, pointRadius: 3 },
+                        { label: 'Rajat', data: [40, 95, 99, 10, 70], borderColor: colRajat, backgroundColor: 'rgba(56, 189, 248, 0.3)', borderWidth: 2, pointRadius: 3 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        r: { 
+                            angleLines: { color: colGridBright },
+                            grid: { color: colGridBright },
+                            pointLabels: { color: colTextBright, font: {size: 12, weight: '700'} }, // Brighter labels
+                            ticks: { display: false, backdropColor: 'transparent' }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Slide 6: Confetti
+        if (index === 5) {
+            setTimeout(() => {
+                confetti({
+                    particleCount: 150, spread: 70, origin: { y: 0.6 },
+                    colors: [colRajat, colAvni, '#ffffff']
+                });
+            }, 500);
+        }
+    }
+
+    // --- Core Navigation (Same as before) ---
+    function showSlide(index) {
+        if (index >= slides.length) { return; }
+        if (index < 0) { index = 0; }
+        currentSlide = index;
+        remainingTime = SLIDE_DURATION;
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[currentSlide].classList.add('active');
+        renderSlideContent(currentSlide);
+        updateProgressBars();
+        startTimer();
+    }
+
+    function updateProgressBars() {
+        for(let i = 0; i < slides.length; i++) {
+            const fill = document.getElementById(`fill-${i}`);
+            fill.style.transition = 'none';
+            fill.style.width = i < currentSlide ? '100%' : '0%';
+        }
+        const currentFill = document.getElementById(`fill-${currentSlide}`);
+        currentFill.style.width = '0%';
+        void currentFill.offsetWidth; 
+    }
+
+    function startTimer() {
+        clearTimeout(timer);
+        startTime = Date.now();
+        const currentFill = document.getElementById(`fill-${currentSlide}`);
+        currentFill.style.transition = `width ${remainingTime}ms linear`;
+        currentFill.style.width = '100%';
+        timer = setTimeout(() => { nextSlide(); }, remainingTime);
+    }
+
+    function pauseTimer() {
+        if(isPaused) return;
+        isPaused = true;
+        storyContainer.classList.add('paused');
+        clearTimeout(timer);
+        const elapsed = Date.now() - startTime;
+        remainingTime -= elapsed;
+        const currentFill = document.getElementById(`fill-${currentSlide}`);
+        const computedStyle = window.getComputedStyle(currentFill);
+        const w = computedStyle.getPropertyValue('width');
+        currentFill.style.transition = 'none';
+        currentFill.style.width = w;
+    }
+
+    function resumeTimer() {
+        if(!isPaused) return;
+        isPaused = false;
+        storyContainer.classList.remove('paused');
+        startTime = Date.now();
+        const currentFill = document.getElementById(`fill-${currentSlide}`);
+        currentFill.style.transition = `width ${remainingTime}ms linear`;
+        currentFill.style.width = '100%';
+        timer = setTimeout(() => { nextSlide(); }, remainingTime);
+    }
+
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+
+    // --- Input Handling ---
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    const handleDown = () => pauseTimer();
+    const handleUp = () => resumeTimer();
+    storyContainer.addEventListener('mousedown', handleDown);
+    storyContainer.addEventListener('mouseup', handleUp);
+    storyContainer.addEventListener('mouseleave', handleUp);
+    storyContainer.addEventListener('touchstart', handleDown, {passive: true});
+    storyContainer.addEventListener('touchend', handleUp);
+
+    // Start
+    showSlide(0);
+
+</script>
+</body>
+</html>
