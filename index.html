@@ -179,12 +179,18 @@
         /* --- Music Player Footer --- */
         .music-player {
             position: absolute; bottom: 40px; left: 25px; right: 25px;
-            display: flex; align-items: center; gap: 15px;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
-            padding: 12px; border-radius: 50px; z-index: 101;
-            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+            padding: 10px 12px; border-radius: 50px; z-index: 101;
+            border: 1px solid rgba(255,255,255,0.08);
             pointer-events: auto;
         }
+        .play-btn {
+            width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #fff; cursor: pointer;
+            pointer-events: auto; z-index: 51; flex-shrink: 0; padding: 0;
+        }
+        .play-btn i { display: flex; align-items: center; justify-content: center; }
         .album-art { width: 40px; height: 40px; border-radius: 50%; background: #fff; overflow: hidden; animation: spin 4s linear infinite; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
         .song-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
         .song-title { font-size: 0.8rem; font-weight: 700; }
@@ -383,6 +389,7 @@
     </div> -->
 
     <div class="music-player">
+        <button id="playBtn" class="play-btn" aria-label="Play/Pause"><i class="fa-solid fa-play"></i></button>
         <div class="album-art"><img src="https://drive.google.com/thumbnail?id=1oBDQEDbE2STmhnFev1GPgLDLpIb3Z7qa" style="width:100%;height:100%;"></div>
         <div class="song-info">
             <div class="song-title">Finding Her</div>
@@ -391,16 +398,48 @@
         <div class="visualizer">
             <div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div>
         </div>
-        <audio id="bgMusic" style="display:none;" autoplay controls>
-            <source src="https://pagalnew.com/128-downloads/50971" type="audio/mp3">
+        <audio id="bgMusic" style="display:none;" autoplay muted playsinline>
+            <source src="https://pagalnew.com/128-downloads/50971" type="audio/mpeg">
+            <source src="https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3" type="audio/mpeg">
         </audio>
     </div>
     
     <script>
         const audio = document.getElementById('bgMusic');
+        const playBtn = document.getElementById('playBtn');
         audio.loop = true;
-        audio.volume = 0.5;
-        audio.play();
+        audio.volume = 0.3;
+        audio.muted = true;
+        audio.play().catch(e => console.warn('Autoplay prevented:', e));
+
+        function updatePlayIcon() {
+            if (!playBtn) return;
+            playBtn.innerHTML = audio.paused ? '<i class="fa-solid fa-play"></i>' : '<i class="fa-solid fa-pause"></i>';
+        }
+
+        if (playBtn) {
+            playBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play().then(() => { audio.muted = false; audio.volume = 0.3; updatePlayIcon(); }).catch(e => console.warn('Play failed:', e));
+                } else {
+                    audio.pause();
+                    updatePlayIcon();
+                }
+            });
+            updatePlayIcon();
+        }
+
+        // Unmute on first user interaction
+        const onFirstInteraction = () => {
+            document.removeEventListener('click', onFirstInteraction);
+            document.removeEventListener('touchstart', onFirstInteraction);
+            audio.muted = false;
+            audio.play().catch(e => console.warn('Play on interaction failed:', e));
+        };
+        document.addEventListener('click', onFirstInteraction, { once: true });
+        document.addEventListener('touchstart', onFirstInteraction, { once: true });
+
+        audio.addEventListener('error', (e) => { console.warn('Audio failed to load or play', e, audio.error); });
     </script>
 
 </div>
